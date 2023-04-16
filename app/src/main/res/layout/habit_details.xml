@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_background"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/tvHabitName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="Name of the habit"
+        android:textColor="@color/main_text"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="400dp"
+        android:layout_height="0dp"
+        android:layout_margin="8dp"
+        app:cardBackgroundColor="@color/main_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvHabitName">
+
+        <TableLayout
+            android:id="@+id/tblDetails"
+            android:layout_width="409dp"
+            android:layout_height="140dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvHabitName"
+            tools:layout_editor_absoluteX="1dp"
+            tools:layout_editor_absoluteY="131dp">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/secondary_button">
+
+                <TextView
+                    android:layout_column="1"
+                    android:layout_weight="0.45"
+                    android:background="@drawable/cell_shape"
+                    android:gravity="center"
+                    android:padding="3dip"
+                    android:text="Category"
+                    android:textColor="@color/main_text"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/tvRow1"
+                    android:layout_column="2"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/cell_shape"
+                    android:gravity="center"
+                    android:padding="3dip"
+                    android:text="Sport"
+                    android:textColor="@color/main_text"
+                    android:textSize="20sp" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/secondary_button">
+
+                <TextView
+                    android:layout_column="1"
+                    android:layout_weight="0.450"
+                    android:background="@drawable/cell_shape"
+                    android:gravity="center"
+                    android:padding="3dp"
+                    android:text="Start"
+                    android:textColor="@color/main_text"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/tvRow2"
+                    android:layout_column="2"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/cell_shape"
+                    android:gravity="center"
+                    android:padding="3dip"
+                    android:text="XD"
+                    android:textColor="@color/main_text"
+                    android:textSize="20sp" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/secondary_button">
+
+                <TextView
+                    android:layout_column="1"
+                    android:layout_weight="0.45"
+                    android:background="@drawable/cell_shape"
+                    android:gravity="center"
+                    android:padding="3dip"
+                    android:text="Duration"
+                    android:textColor="@color/main_text"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/tvRow3"
+                    android:layout_column="2"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/cell_shape"
+                    android:gravity="center"
+                    android:padding="3dip"
+                    android:text="Sport"
+                    android:textColor="@color/main_text"
+                    android:textSize="20sp" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/secondary_button">
+
+                <TextView
+                    android:layout_column="1"
+                    android:layout_weight="0.45"
+                    android:background="@drawable/cell_shape"
+                    android:gravity="center"
+                    android:padding="3dip"
+                    android:text="Score"
+                    android:textColor="@color/main_text"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/tvRow4"
+                    android:layout_column="2"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/cell_shape"
+                    android:gravity="center"
+                    android:padding="3dip"
+                    android:text="Sport"
+                    android:textColor="@color/main_text"
+                    android:textSize="20sp" />
+            </TableRow>
+        </TableLayout>
+    </androidx.cardview.widget.CardView>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/btnEditHabit"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:width="250dp"
+        android:height="70dp"
+        android:gravity="center"
+        android:text="Edit"
+        android:textColor="@color/main_text"
+        android:textSize="20sp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnDeleteHabit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/btnDeleteHabit"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:height="70dp"
+        android:gravity="center"
+        android:text="Delete"
+        android:textColor="@color/main_text"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/btnClose"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btnClose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="36dp"
+        android:layout_marginBottom="36dp"
+        android:backgroundTint="@color/primary_button"
+        android:text="Close"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

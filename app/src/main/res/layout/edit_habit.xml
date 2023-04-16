@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_background">
+
+    <EditText
+        android:id="@+id/etEditName"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:ems="10"
+        android:hint="Set name of your habit"
+        android:textColor="@color/main_text"
+        android:backgroundTint="@color/main_text"
+        android:textColorHint="@color/placeholder"
+        android:inputType="text"
+        app:layout_constraintBottom_toTopOf="@+id/etEditCategory"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:autofillHints="12:00" />
+
+    <EditText
+        android:id="@+id/etEditCategory"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:ems="10"
+        android:hint="Choose category"
+        android:inputType="text"
+        android:textColor="@color/main_text"
+        android:backgroundTint="@color/main_text"
+        android:textColorHint="@color/placeholder"
+        app:layout_constraintBottom_toTopOf="@+id/etEditHabitStart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:autofillHints="12:00" />
+
+    <EditText
+        android:id="@+id/etEditHabitStart"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:ems="10"
+        android:inputType="datetime"
+        android:hint="Set when habit begins"
+        android:textColor="@color/main_text"
+        android:backgroundTint="@color/main_text"
+        android:textColorHint="@color/placeholder"
+        app:layout_constraintBottom_toTopOf="@+id/etEditHabitDuration"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:autofillHints="12:00" />
+
+    <EditText
+        android:id="@+id/etEditHabitDuration"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:ems="10"
+        android:inputType="datetime"
+        android:hint="Set how long does habit take"
+        android:textColor="@color/main_text"
+        android:backgroundTint="@color/main_text"
+        android:textColorHint="@color/placeholder"
+        app:layout_constraintBottom_toTopOf="@+id/btnEditTuesday"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:autofillHints="12:00" />
+
+    <Button
+        android:id="@+id/btnEditMonday"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="70dp"
+        android:backgroundTint="@color/primary_button"
+        android:text="Mon"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toTopOf="@+id/btnEditFriday"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btnEditTuesday"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="6dp"
+        android:backgroundTint="@color/primary_button"
+        android:text="Tue"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toTopOf="@+id/btnEditFriday"
+        app:layout_constraintStart_toEndOf="@+id/btnEditMonday" />
+    <Button
+        android:id="@+id/btnEditWednesday"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="6dp"
+        android:backgroundTint="@color/primary_button"
+        android:text="Wed"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toTopOf="@+id/btnEditFriday"
+        app:layout_constraintStart_toEndOf="@+id/btnEditTuesday" />
+    <Button
+        android:id="@+id/btnEditThursday"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="6dp"
+        android:backgroundTint="@color/primary_button"
+        android:text="Thr"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toTopOf="@+id/btnEditFriday"
+        app:layout_constraintStart_toEndOf="@+id/btnEditWednesday" />
+
+    <Button
+        android:id="@+id/btnEditFriday"
+        android:layout_width="60dp"
+        android:backgroundTint="@color/primary_button"
+        android:layout_height="60dp"
+        android:layout_marginStart="105dp"
+        android:text="Fri"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toTopOf="@+id/etEditScore"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btnEditSaturday"
+        android:layout_width="60dp"
+        android:backgroundTint="@color/primary_button"
+        android:layout_height="60dp"
+        android:layout_marginStart="6dp"
+        android:text="Sat"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toTopOf="@+id/etEditScore"
+        app:layout_constraintStart_toEndOf="@id/btnEditFriday" />
+
+    <Button
+        android:id="@+id/btnEditSunday"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="6dp"
+        android:backgroundTint="@color/primary_button"
+        android:text="Sun"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toTopOf="@+id/etEditScore"
+        app:layout_constraintStart_toEndOf="@id/btnEditSaturday" />
+
+    <EditText
+        android:id="@+id/etEditScore"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:hint="Choose difficulty in range 1-100"
+        android:inputType="number"
+        android:textColor="@color/main_text"
+        android:backgroundTint="@color/main_text"
+        android:textColorHint="@color/placeholder"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btnEditAddHabit"
+        tools:layout_editor_absoluteY="93dp"
+        android:layout_marginBottom="80dp"
+        />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/btnEditAddHabit"
+        android:layout_width="250dp"
+        android:layout_height="57dp"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:text="Submit"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.91"
+        android:backgroundTint="@color/primary_button"/>
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
