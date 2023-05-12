@@ -7,6 +7,7 @@ import android.view.Window
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
@@ -25,6 +26,7 @@ import com.example.habits.activities.AddHabitActivity.Companion.HABIT_NAME
 import com.example.habits.activities.AddHabitActivity.Companion.SCORE
 import com.example.habits.activities.AddHabitActivity.Companion.TIME_START
 import com.example.habits.adapter.HabitItemAdapter
+import com.example.habits.alarms.NotificationAlarmScheduler
 import com.example.habits.data.DayCompletion
 import com.example.habits.data.DaySchedule
 import com.example.habits.data.Habit
@@ -34,10 +36,11 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 class HabitsScheduleActivity : AppCompatActivity() {
-    private val habitViewModel: HabitViewModel by viewModels {
+     private val habitViewModel: HabitViewModel by viewModels {
         HabitViewModelFactory((application as HabitApplication).repository)
     }
-
+    private lateinit var scheduler: NotificationAlarmScheduler
+    private var useNotifications: Boolean = true
     private val newHabitActivityRequestCode = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,6 +48,7 @@ class HabitsScheduleActivity : AppCompatActivity() {
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.habit_schedule)
 
+        scheduler = NotificationAlarmScheduler(this)
         val recyclerView = findViewById<RecyclerView>(R.id.rvHabits)
 
         val adapter = HabitItemAdapter(
@@ -95,6 +99,7 @@ class HabitsScheduleActivity : AppCompatActivity() {
         val addButton = findViewById<Button>(R.id.materialButton)
         val scoreView = findViewById<TextView>(R.id.tvTodayScore)
         val statsIcon = findViewById<ImageView>(R.id.ivStatistics)
+        val notificationIcon = findViewById<ImageView>(R.id.ivNotifications)
 
         addButton.setOnClickListener {
             val intent = Intent(this, AddHabitActivity::class.java)
@@ -107,6 +112,18 @@ class HabitsScheduleActivity : AppCompatActivity() {
             this.startActivity(intent)
         }
 
+        notificationIcon.setOnClickListener {
+            useNotifications = if(useNotifications) {
+                Toast.makeText(this, "Notifications off", Toast.LENGTH_SHORT).show()
+                notificationIcon.setImageResource(R.drawable.baseline_notifications_off_24)
+                false
+            } else {
+                Toast.makeText(this, "Notifications on", Toast.LENGTH_SHORT).show()
+                notificationIcon.setImageResource(R.drawable.baseline_notifications_24)
+                true
+            }
+        }
+
         habitViewModel.getScoreForDay(LocalDate.now().dayOfYear).observe(this) { score ->
             score.let { scoreView.text = "Today score: ${score ?: 0}" }
         }
@@ -116,6 +133,24 @@ class HabitsScheduleActivity : AppCompatActivity() {
 
         habitViewModel.getRemainingHabits(0, LocalDate.now().dayOfYear).observe(this) { count ->
             count.let { countPrompt.text = "You have $it habit left for today" }
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (useNotifications) {
+            CoroutineScope(Dispatchers.IO).launch {
+                val doy = LocalDate.now().dayOfYear
+
+                val toDo = habitViewModel.getRemainingHabitsUntilHour(0, doy)
+                val hourEnds = toDo.map {
+                    (it.hourStart + (it.minuteStart + it.duration)/60) * 100 + (it.minuteStart + it.duration)%60
+                } as ArrayList
+
+                scheduler.schedule(hourEnds)
+            }
+        } else {
+            scheduler.cancel()
         }
     }
 

@@ -29,9 +29,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
+        val buttons = listOf(R.id.btnHabit1, R.id.btnHabit2, R.id.btnHabit3, R.id.btnHabit4)
 //        CoroutineScope(Dispatchers.IO).launch {
 //            habitViewModel.deleteAllHabits()
 //        }
+
         habitViewModel.allHabits.observe(this) { selectedHabit ->
             count = selectedHabit.size
             if (count > 0) {
@@ -41,10 +43,6 @@ class MainActivity : AppCompatActivity() {
             } else {
 
                 setContentView(R.layout.choose_habits)
-                val btnHabit1 = findViewById<Button>(R.id.btnHabit1)
-                val btnHabit2 = findViewById<Button>(R.id.btnHabit2)
-                val btnHabit3 = findViewById<Button>(R.id.btnHabit3)
-                val btnHabit4 = findViewById<Button>(R.id.btnHabit4)
 
                 val btnNext = findViewById<Button>(R.id.btnNext)
                 btnNext.setOnClickListener {
@@ -65,17 +63,11 @@ class MainActivity : AppCompatActivity() {
                     finish()
                 }
 
-                btnHabit1.setOnClickListener {
-                    chooseHabit(btnHabit1, 0)
-                }
-                btnHabit2.setOnClickListener {
-                    chooseHabit(btnHabit2, 1)
-                }
-                btnHabit3.setOnClickListener {
-                    chooseHabit(btnHabit3, 2)
-                }
-                btnHabit4.setOnClickListener {
-                    chooseHabit(btnHabit4, 3)
+                for (i in 0..3) {
+                    val tempButton = findViewById<Button>(buttons[i])
+                    tempButton.setOnClickListener {
+                        chooseHabit(tempButton, i)
+                    }
                 }
             }
         }

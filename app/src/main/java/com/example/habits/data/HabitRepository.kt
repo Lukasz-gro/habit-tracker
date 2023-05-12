@@ -31,6 +31,11 @@ class HabitRepository(private val habitDao: HabitDao) {
     }
 
     @Suppress("RedundantSuspendModifier")
+    fun getRemainingHabitsUntilHour(day: Int, day2: Int): List<Habit> {
+        return habitDao.remainingHabitsUntilHour(day, day2)
+    }
+
+    @Suppress("RedundantSuspendModifier")
     fun getDaysOfHabit(id: Long): LiveData<List<Int>> {
         return habitDao.getDaysOfHabit(id).asLiveData()
     }

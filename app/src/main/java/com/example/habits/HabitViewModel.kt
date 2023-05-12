@@ -35,6 +35,10 @@ class HabitViewModel(private val repository: HabitRepository) : ViewModel() {
         return repository.getRemainingHabits(day, day2)
     }
 
+    fun getRemainingHabitsUntilHour(day: Int, day2: Int): List<Habit> {
+        return repository.getRemainingHabitsUntilHour(day, day2)
+    }
+
     fun getDaysOfHabit(id: Long): LiveData<List<Int>> {
         return repository.getDaysOfHabit(id)
     }

@@ -76,6 +76,11 @@ interface HabitDao {
             "(SELECT habitId from dayCompletion where day = :dayOfYear and done = true))")
     fun remainingHabits(dayOfWeek: Int, dayOfYear: Int): Flow<Int>
 
+    @Query("SELECT * from habitList where id IN " +
+            "(SELECT habit from daySchedule where day = :dayOfWeek and habit NOT IN " +
+            "(SELECT habitId from dayCompletion where day = :dayOfYear and done = true))")
+    fun remainingHabitsUntilHour(dayOfWeek: Int, dayOfYear: Int): List<Habit>
+
     @Query("SELECT SUM(score) from habitList where id in (SELECT habitId from dayCompletion where day = :day and done = true)")
     fun getScoreForDay(day: Int) : Flow<Int?>
 
