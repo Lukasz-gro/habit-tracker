@@ -17,6 +17,9 @@ interface HabitDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertDaySchedule(daySchedule: DaySchedule)
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertPhoto(photo: Photo)
+
     @Update
     suspend fun update(habit: Habit)
 
@@ -53,12 +56,6 @@ interface HabitDao {
     @Query("SELECT COUNT(*) from dayCompletion where day = :day and done = true")
     fun countCompletedInDay(day: Int): Flow<Int>
 
-//    @Query("SELECT c from (SELECT habitList.category as c, COUNT(habitList.category) as v from habitList " +
-//            "JOIN daySchedule on habitList.id=daySchedule.habit " +
-//            "WHERE daySchedule.day = :day " +
-//            "GROUP BY habitList.category " +
-//            "ORDER BY v DESC + " +
-//            "LIMIT 1)")
     @Query("SELECT category from habitList LIMIT 1")
     fun getMostPopularCategory(): Flow<String?>
 
@@ -89,4 +86,7 @@ interface HabitDao {
 
     @Query("DELETE from daySchedule WHERE habit = :id")
     fun deleteFromDaySchedule(id: Long)
+
+    @Query("SELECT path from photos WHERE habitId = :habitId and day_week = :day and day_year = :dayOfYear")
+    fun getPicturePath(habitId: Long, day: Int, dayOfYear: Int): Flow<String?>
 }

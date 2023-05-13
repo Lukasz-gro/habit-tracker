@@ -21,6 +21,12 @@ class HabitRepository(private val habitDao: HabitDao) {
     }
 
     @Suppress("RedundantSuspendModifier")
+    @WorkerThread
+    suspend fun insertPhoto(photo: Photo) {
+        habitDao.insertPhoto(photo)
+    }
+
+    @Suppress("RedundantSuspendModifier")
      fun getStatusOfHabit(day: Int, habitId: Long): LiveData<Boolean?> {
         return habitDao.getStatusOfHabit(day, habitId).asLiveData()
     }
@@ -103,6 +109,10 @@ class HabitRepository(private val habitDao: HabitDao) {
 
     fun deleteFromDaySchedule(id: Long) {
         habitDao.deleteFromDaySchedule(id)
+    }
+
+    fun getPicturePath(habitId: Long, day: Int, dayOfYear: Int): LiveData<String?> {
+        return habitDao.getPicturePath(habitId, day, dayOfYear).asLiveData()
     }
 
     @Suppress("RedundantSuspendModifier")

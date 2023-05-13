@@ -2,22 +2,20 @@ package com.example.habits.activities
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.icu.util.LocaleData
 import android.os.Bundle
 import android.view.Window
-import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.bumptech.glide.Glide
 import com.example.habits.HabitApplication
 import com.example.habits.HabitViewModel
 import com.example.habits.HabitViewModelFactory
 import com.example.habits.R
-import com.example.habits.data.DayCompletion
+import com.example.habits.activities.HabitsScheduleActivity.Companion.observeOnce
 import com.example.habits.data.Habit
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
@@ -26,11 +24,12 @@ class HabitDetailsActivity : AppCompatActivity() {
         HabitViewModelFactory((application as HabitApplication).repository)
     }
     lateinit var habit: Habit
+    var id: Long = 0
+    private lateinit var habitPicture: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val id = intent.extras?.getLong("id") ?: 0
-
+        id = intent.extras?.getLong("id") ?: 0
         habitViewModel.getHabitById(id).observe(this) { selectedHabit ->
             if (selectedHabit != null) {
                 habit = selectedHabit
@@ -41,22 +40,38 @@ class HabitDetailsActivity : AppCompatActivity() {
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.habit_details)
 
-        findViewById<Button>(R.id.btnDeleteHabit).setOnClickListener {
+        habitPicture = findViewById(R.id.ivHabitPicture)
+
+        habitViewModel.getPicturePath(id, 0, LocalDate.now().dayOfYear).observeOnce(this) {
+            updateImage(it, habitPicture)
+        }
+
+        findViewById<ImageView>(R.id.ivDelete).setOnClickListener {
            this.lifecycleScope.launch {
                habitViewModel.deleteHabitById(id)
            }
             finish()
         }
 
-        findViewById<Button>(R.id.btnEditHabit).setOnClickListener {
-            val intent = Intent(this, EditHabitActivity::class.java)
-            intent.putExtra("id", habit.id)
+        findViewById<ImageView>(R.id.ivCamera).setOnClickListener {
+            val intent = Intent(this, CameraActivity::class.java)
+            intent.putExtra("id", id)
+
             this.startActivity(intent)
         }
+    }
 
-        findViewById<Button>(R.id.btnClose).setOnClickListener {
-            finish()
+    override fun onResume() {
+        super.onResume()
+        habitViewModel.getPicturePath(id, 0, LocalDate.now().dayOfYear).observeOnce(this) {
+            updateImage(it, habitPicture)
         }
+    }
+    private fun updateImage(path: String?, habitPicture: ImageView) {
+        Glide.with(this)
+            .load(path)
+            .placeholder(R.drawable.baseline_xd)
+            .into(habitPicture)
     }
 
     @SuppressLint("SetTextI18n")

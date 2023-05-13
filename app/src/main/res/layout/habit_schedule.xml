@@ -60,7 +60,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/ivStatistics"
         app:layout_constraintTop_toBottomOf="@id/imageView"
-        app:srcCompat="@drawable/baseline_calendar_month_24"
+        app:srcCompat="@drawable/baseline_photo_24"
         app:layout_constraintHorizontal_chainStyle="spread" />
 
     <ImageView

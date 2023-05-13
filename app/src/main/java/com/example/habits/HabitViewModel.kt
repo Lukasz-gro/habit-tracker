@@ -1,10 +1,7 @@
 package com.example.habits
 
 import androidx.lifecycle.*
-import com.example.habits.data.DayCompletion
-import com.example.habits.data.DaySchedule
-import com.example.habits.data.Habit
-import com.example.habits.data.HabitRepository
+import com.example.habits.data.*
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -20,6 +17,12 @@ class HabitViewModel(private val repository: HabitRepository) : ViewModel() {
     fun insertDaySchedule(daySchedule: DaySchedule) {
         viewModelScope.launch {
             repository.insertDaySchedule(daySchedule)
+        }
+    }
+
+    fun insertPhoto(photo: Photo) {
+        viewModelScope.launch {
+            repository.insertPhoto(photo)
         }
     }
 
@@ -97,6 +100,10 @@ class HabitViewModel(private val repository: HabitRepository) : ViewModel() {
 
     fun deleteFromDaySchedule(id: Long) {
         repository.deleteFromDaySchedule(id)
+    }
+
+    fun getPicturePath(habitId: Long, day: Int, dayOfYear: Int): LiveData<String?> {
+        return repository.getPicturePath(habitId, day, dayOfYear)
     }
 }
 

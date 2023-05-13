@@ -149,45 +149,37 @@
         </TableLayout>
     </androidx.cardview.widget.CardView>
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/btnEditHabit"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:width="250dp"
-        android:height="70dp"
-        android:gravity="center"
-        android:text="Edit"
-        android:textColor="@color/main_text"
-        android:textSize="20sp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/btnDeleteHabit"
+    <ImageView
+        android:id="@+id/ivHabitPicture"
+        android:layout_width="280dp"
+        android:layout_height="280dp"
+        android:layout_marginTop="48dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView"
+        tools:srcCompat="@tools:sample/avatars" />
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/btnDeleteHabit"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:height="70dp"
-        android:gravity="center"
-        android:text="Delete"
-        android:textColor="@color/main_text"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/btnClose"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/btnClose"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="36dp"
-        android:layout_marginBottom="36dp"
-        android:backgroundTint="@color/primary_button"
-        android:text="Close"
+    <ImageView
+        android:id="@+id/ivCamera"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/baseline_camera_alt_24"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="32dp"/>
 
+    <ImageView
+        android:id="@+id/ivDelete"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:srcCompat="@drawable/baseline_delete_forever_24"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        android:layout_marginBottom="32dp"
+        android:layout_marginEnd="32dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,11 +13,9 @@ class NotificationAlarmScheduler(
     private val context: Context
 ) {
     private val alarmManager = context.getSystemService(AlarmManager::class.java) as AlarmManager
-    @SuppressLint("UnspecifiedImmutableFlag")
     private val alarmIntent = Intent(context, AlarmReceiver::class.java)
 
     fun schedule(remainingHabits: ArrayList<Int>) {
-        println("To jest do zrobienia: ${remainingHabits.size}")
         val calendar: Calendar = Calendar.getInstance().apply {
             timeInMillis = System.currentTimeMillis()
             set(Calendar.HOUR_OF_DAY, 11)

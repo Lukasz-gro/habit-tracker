@@ -100,6 +100,7 @@ class HabitsScheduleActivity : AppCompatActivity() {
         val scoreView = findViewById<TextView>(R.id.tvTodayScore)
         val statsIcon = findViewById<ImageView>(R.id.ivStatistics)
         val notificationIcon = findViewById<ImageView>(R.id.ivNotifications)
+        val calendarIcon = findViewById<ImageView>(R.id.ivCalendar)
 
         addButton.setOnClickListener {
             val intent = Intent(this, AddHabitActivity::class.java)
@@ -134,6 +135,11 @@ class HabitsScheduleActivity : AppCompatActivity() {
         habitViewModel.getRemainingHabits(0, LocalDate.now().dayOfYear).observe(this) { count ->
             count.let { countPrompt.text = "You have $it habit left for today" }
         }
+
+//        calendarIcon.setOnClickListener {
+//            val intent = Intent(this, CameraActivity::class.java)
+//            this.startActivity(intent)
+//        }
     }
 
     override fun onStop() {

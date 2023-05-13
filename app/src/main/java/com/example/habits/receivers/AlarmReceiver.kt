@@ -18,21 +18,12 @@ class AlarmReceiver: BroadcastReceiver() {
 
     private fun sendNotificationOnChannel1(context: Context, intent: Intent) {
         val habitEndTime = intent.getIntegerArrayListExtra("hourEnds")
-        if (habitEndTime != null) {
-            for (i in habitEndTime) {
-                println("Wypisuje godzuny które przyszly $i")
-            }
-        }
+
         val hour = getHourOfTheDay()
         val toDoBeforeHour = habitEndTime?.filter {
             it / 100 <= hour
         }
 
-        if (toDoBeforeHour != null) {
-            for (i in toDoBeforeHour) {
-                println("Wypisuje godzuny które zostały $i")
-            }
-        }
         val notification = NotificationCompat.Builder(
             context,
             "channel1"
