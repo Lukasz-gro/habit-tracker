@@ -53,11 +53,27 @@ interface HabitDao {
     @Query("SELECT COUNT(*) from habitList where id IN (SELECT habit from daySchedule where day = :day)")
     fun getHabitCountForDay(day: Int): Flow<Int>
 
+    @Query("SELECT COUNT(*) from habitList where category = :category and id IN (SELECT habit from daySchedule where day = :day)")
+    fun getHabitCountForDayWithCategory(day: Int, category: String): Flow<Int>
+
+    @Query("SELECT COUNT(*) from daySchedule where habit IN (SELECT id from habitList)")
+    fun getHabitCountForWeek(): Flow<Int>
+
+    @Query("SELECT COUNT(*) from daySchedule where habit IN (SELECT id from habitList WHERE category = :category)")
+    fun getHabitCountForWeekWithCategory(category: String): Flow<Int>
+
+
     @Query("SELECT COUNT(*) from dayCompletion where day = :day and done = true")
     fun countCompletedInDay(day: Int): Flow<Int>
 
-    @Query("SELECT category from habitList LIMIT 1")
-    fun getMostPopularCategory(): Flow<String?>
+    @Query("SELECT COUNT(*) from dayCompletion where day = :day and done = true and habitId in (SELECT id from habitList where category = :category)")
+    fun countCompletedInDayWithCategory(day: Int, category: String): Flow<Int>
+
+    @Query("SELECT COUNT(*) from dayCompletion where day <= :day and day >= (:day-6) and done = true")
+    fun countCompletedInWeek(day: Int): Flow<Int>
+
+    @Query("SELECT COUNT(*) from dayCompletion where day <= :day and day >= (:day-6) and done = true and habitId in (SELECT id from habitList where category = :category)")
+    fun countCompletedInWeekWithCategory(day: Int, category: String): Flow<Int>
 
     @Query("DELETE from habitList")
     suspend fun deleteAll()
@@ -73,6 +89,18 @@ interface HabitDao {
             "(SELECT habitId from dayCompletion where day = :dayOfYear and done = true))")
     fun remainingHabits(dayOfWeek: Int, dayOfYear: Int): Flow<Int>
 
+    @Query("SELECT COUNT(*) from habitList where category = :category and id IN " +
+            "(SELECT habit from daySchedule where day = :dayOfWeek and habit NOT IN " +
+            "(SELECT habitId from dayCompletion where day = :dayOfYear and done = true))")
+    fun remainingHabitsWithCategory(dayOfWeek: Int, dayOfYear: Int, category: String): Flow<Int>
+
+    @Query("SELECT 41 - COUNT(*) from dayCompletion where day <= :dayOfYear and day >=(:dayOfYear-6) and done = true and :dayOfWeek <= 100")
+    fun remainingHabitsForWeek(dayOfWeek: Int, dayOfYear: Int): Flow<Int>
+
+    @Query("SELECT 41 - COUNT(*) from dayCompletion LEFT JOIN habitList ON dayCompletion.habitId=habitList.id" +
+            " where dayCompletion.day <= :dayOfYear and dayCompletion.day >=(:dayOfYear-6) and dayCompletion.done = true and habitList.category=:category and :dayOfWeek <= 100")
+    fun remainingHabitsForWeekWithCategory(dayOfWeek: Int, dayOfYear: Int, category: String): Flow<Int>
+
     @Query("SELECT * from habitList where id IN " +
             "(SELECT habit from daySchedule where day = :dayOfWeek and habit NOT IN " +
             "(SELECT habitId from dayCompletion where day = :dayOfYear and done = true))")
@@ -80,6 +108,19 @@ interface HabitDao {
 
     @Query("SELECT SUM(score) from habitList where id in (SELECT habitId from dayCompletion where day = :day and done = true)")
     fun getScoreForDay(day: Int) : Flow<Int?>
+
+    @Query("SELECT SUM(score) from habitList where category = :category and id in (SELECT habitId from dayCompletion where day = :day and done = true)")
+    fun getScoreForDayWithCategory(day: Int, category: String): Flow<Int?>
+
+    @Query("SELECT SUM(habitList.score) from dayCompletion " +
+            "LEFT JOIN habitList ON dayCompletion.habitId=habitList.id " +
+            "WHERE dayCompletion.day <= :day and dayCompletion.day >=(:day-6)")
+    fun getScoreForWeek(day: Int) : Flow<Int?>
+
+    @Query("SELECT SUM(habitList.score) from dayCompletion " +
+            "LEFT JOIN habitList ON dayCompletion.habitId=habitList.id " +
+            "WHERE dayCompletion.day <= :day and dayCompletion.day >=(:day-6) and habitList.category=:category")
+    fun getScoreForWeekWithCategory(day: Int, category: String): Flow<Int?>
 
     @Query("SELECT day from daySchedule WHERE habit = :id")
     fun getDaysOfHabit(id: Long): Flow<List<Int>>
@@ -89,4 +130,8 @@ interface HabitDao {
 
     @Query("SELECT path from photos WHERE habitId = :habitId and day_week = :day and day_year = :dayOfYear")
     fun getPicturePath(habitId: Long, day: Int, dayOfYear: Int): Flow<String?>
+
+    @Query("SELECT DISTINCT category FROM habitList")
+    fun getCategoryList(): Flow<List<String>>
+
 }

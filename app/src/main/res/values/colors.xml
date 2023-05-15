@@ -12,8 +12,9 @@
     <color name="placeholder">#EDA09E9E</color>
     <color name="main_background">#1E1D2B</color>
     <color name="secondary_background">#2B2C3E</color>
+    <color name="teriary_background">#42446E</color>
     <color name="border">#666667</color>
     <color name="primary_button">#0768dd</color>
     <color name="secondary_button">#604737</color>
-    <color name="primary_button_selected">#004EA5</color>
+    <color name="primary_button_selected">#003570</color>
 </resources>

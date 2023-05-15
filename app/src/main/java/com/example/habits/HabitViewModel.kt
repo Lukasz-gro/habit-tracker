@@ -34,8 +34,20 @@ class HabitViewModel(private val repository: HabitRepository) : ViewModel() {
         return repository.getStatusOfHabit(day, habitId)
     }
 
-    fun getRemainingHabits(day: Int, day2: Int): LiveData<Int> {
-        return repository.getRemainingHabits(day, day2)
+    fun getRemainingHabits(day: Int, day2: Int, category: String): LiveData<Int> {
+        return if (category == "All categories") {
+            repository.getRemainingHabits(day, day2)
+        } else {
+            repository.getRemainingHabitsWithCategory(day, day2, category)
+        }
+    }
+
+    fun getRemainingHabitsForWeek(day: Int, day2: Int, category: String): LiveData<Int> {
+        return if (category == "All categories") {
+            repository.getRemainingHabitsForWeek(day, day2)
+        } else {
+            repository.getRemainingHabitsForWeekWithCategory(day, day2, category)
+        }
     }
 
     fun getRemainingHabitsUntilHour(day: Int, day2: Int): List<Habit> {
@@ -46,8 +58,20 @@ class HabitViewModel(private val repository: HabitRepository) : ViewModel() {
         return repository.getDaysOfHabit(id)
     }
 
-    fun getScoreForDay(day: Int): LiveData<Int?> {
-        return repository.getScoreForADay(day)
+    fun getScoreForDay(day: Int, category: String): LiveData<Int?> {
+        return if (category == "All categories") {
+            repository.getScoreForADay(day)
+        } else {
+            repository.getScoreForADayWithCategory(day, category)
+        }
+    }
+
+    fun getScoreForWeek(day: Int, category: String): LiveData<Int?> {
+        return if (category == "All categories") {
+            repository.getScoreForWeek(day)
+        } else {
+            repository.getScoreForWeekWithCategory(day, category)
+        }
     }
 
     fun getDayCompletion(day: Int, habitId: Long): DayCompletion? {
@@ -58,16 +82,36 @@ class HabitViewModel(private val repository: HabitRepository) : ViewModel() {
         return repository.getHabitsForDay(day)
     }
 
-    fun getHabitsCountForDay(day: Int) : LiveData<Int> {
-        return repository.getHabitsCountForDay(day)
+    fun getHabitsCountForDay(day: Int, category: String) : LiveData<Int> {
+        return if (category == "All categories") {
+            repository.getHabitsCountForDay(day)
+        } else {
+            repository.getHabitsCountForDayWithCategory(day, category)
+        }
     }
 
-    fun countCompletedInDay(day: Int): LiveData<Int> {
-        return repository.countCompletedInDay(day)
+    fun getHabitsCountForWeek(category: String) : LiveData<Int> {
+        return if (category == "All categories") {
+            repository.getHabitsCountForWeek()
+        } else {
+            repository.getHabitsCountForWeekWithCategory(category)
+        }
     }
 
-    fun getMostPopularCategory(day: Int): LiveData<String?> {
-        return repository.getMostPopularCategory(day)
+    fun countCompletedInDay(day: Int, category: String): LiveData<Int> {
+        return if (category == "All categories") {
+            repository.countCompletedInDay(day)
+        } else {
+            repository.countCompletedInDayWithCategory(day, category)
+        }
+    }
+
+    fun countCompletedInWeek(day: Int, category: String): LiveData<Int> {
+        return if (category == "All categories") {
+            repository.countCompletedInWeek(day)
+        } else {
+            repository.countCompletedInWeekWithCategory(day, category)
+        }
     }
 
     suspend fun deleteHabitById(id: Long) {
@@ -104,6 +148,10 @@ class HabitViewModel(private val repository: HabitRepository) : ViewModel() {
 
     fun getPicturePath(habitId: Long, day: Int, dayOfYear: Int): LiveData<String?> {
         return repository.getPicturePath(habitId, day, dayOfYear)
+    }
+
+    fun getCategoryList(): LiveData<List<String>> {
+        return repository.getCategoryList()
     }
 }
 

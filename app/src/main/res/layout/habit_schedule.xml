@@ -52,7 +52,7 @@
         tools:srcCompat="@tools:sample/avatars" />
 
     <ImageView
-        android:id="@+id/ivCalendar"
+        android:id="@+id/ivGallery"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginTop="15dp"
@@ -70,7 +70,7 @@
         android:layout_marginTop="15dp"
         app:layout_constraintBottom_toTopOf="@+id/tvHabitCountPrompt"
         app:layout_constraintEnd_toStartOf="@+id/ivBluetooth"
-        app:layout_constraintStart_toEndOf="@+id/ivCalendar"
+        app:layout_constraintStart_toEndOf="@+id/ivGallery"
         app:layout_constraintTop_toBottomOf="@id/imageView"
         app:srcCompat="@drawable/baseline_insert_chart_24" />
 

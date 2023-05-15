@@ -1,6 +1,7 @@
 package com.example.habits.receivers
 
 import android.Manifest
+import android.app.Notification
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -9,28 +10,31 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.example.habits.R
-import java.util.*
+import com.example.habits.data.HabitRoomDatabase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
+import java.time.LocalDate
 
 class AlarmReceiver: BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
-        sendNotificationOnChannel1(context, intent)
+        val remainingHabits = HabitRoomDatabase.getDatabase(context).habitDao().remainingHabits(0, LocalDate.now().dayOfYear)
+        var flowValue: Int
+        runBlocking (Dispatchers.IO) {
+            flowValue = remainingHabits.first()
+
+        }
+        sendNotificationOnChannel1(context, flowValue)
     }
 
-    private fun sendNotificationOnChannel1(context: Context, intent: Intent) {
-        val habitEndTime = intent.getIntegerArrayListExtra("hourEnds")
-
-        val hour = getHourOfTheDay()
-        val toDoBeforeHour = habitEndTime?.filter {
-            it / 100 <= hour
-        }
-
+    private fun sendNotificationOnChannel1(context: Context, remainingHabits: Int) {
         val notification = NotificationCompat.Builder(
             context,
             "channel1"
         )
             .setSmallIcon(R.drawable.baseline_crisis_alert_24)
             .setContentTitle("Reminder")
-            .setContentText("You have ${toDoBeforeHour?.size} habits to do!")
+            .setContentText("You have $remainingHabits habits to do!")
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .build()
 
@@ -43,14 +47,5 @@ class AlarmReceiver: BroadcastReceiver() {
         }
 
         NotificationManagerCompat.from(context).notify(1, notification)
-    }
-
-    private fun getHourOfTheDay(): Int {
-        val date = Date()
-        val cal = Calendar.getInstance()
-        cal.time = date
-        val hours = cal.get(Calendar.HOUR_OF_DAY)
-        println("Hours today, hours today $hours")
-        return hours
     }
 }

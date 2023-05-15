@@ -16,14 +16,12 @@ class NotificationAlarmScheduler(
     private val alarmIntent = Intent(context, AlarmReceiver::class.java)
 
     fun schedule(remainingHabits: ArrayList<Int>) {
+        println("Scheduluje nowe powiadomienia")
         val calendar: Calendar = Calendar.getInstance().apply {
             timeInMillis = System.currentTimeMillis()
-            set(Calendar.HOUR_OF_DAY, 11)
+            set(Calendar.HOUR_OF_DAY, 10)
             set(Calendar.MINUTE, 0)
         }
-
-        alarmIntent.putExtra("remaining", remainingHabits[0])
-        alarmIntent.putExtra("hourEnds", remainingHabits)
 
         val pendingIntent = alarmIntent.let {
                 intent -> PendingIntent.getBroadcast(context, 0, intent, 0)
@@ -32,7 +30,7 @@ class NotificationAlarmScheduler(
         alarmManager.setRepeating(
             AlarmManager.RTC_WAKEUP,
             calendar.timeInMillis,
-            1000 * 60 * 1,
+            1000 * 60 * 5,
             pendingIntent
         )
     }

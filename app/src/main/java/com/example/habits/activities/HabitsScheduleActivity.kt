@@ -1,7 +1,9 @@
 package com.example.habits.activities
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.Window
 import android.widget.Button
@@ -42,13 +44,26 @@ class HabitsScheduleActivity : AppCompatActivity() {
     private lateinit var scheduler: NotificationAlarmScheduler
     private var useNotifications: Boolean = true
     private val newHabitActivityRequestCode = 1
+    private lateinit var sharedPref: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.habit_schedule)
 
+        val countPrompt = findViewById<TextView>(R.id.tvHabitCountPrompt)
+        val addButton = findViewById<Button>(R.id.materialButton)
+        val scoreView = findViewById<TextView>(R.id.tvTodayScore)
+        val statsIcon = findViewById<ImageView>(R.id.ivStatistics)
+        val notificationIcon = findViewById<ImageView>(R.id.ivNotifications)
+        val galleryIcon = findViewById<ImageView>(R.id.ivGallery)
+
         scheduler = NotificationAlarmScheduler(this)
+        sharedPref = getSharedPreferences("useNotifications", Context.MODE_PRIVATE)
+        useNotifications = sharedPref.getBoolean("notifyMode", true)
+        println("Wartosc w useNotifications jest taka ")
+        setNotificationsIcon(notificationIcon)
+
         val recyclerView = findViewById<RecyclerView>(R.id.rvHabits)
 
         val adapter = HabitItemAdapter(
@@ -95,13 +110,6 @@ class HabitsScheduleActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        val countPrompt = findViewById<TextView>(R.id.tvHabitCountPrompt)
-        val addButton = findViewById<Button>(R.id.materialButton)
-        val scoreView = findViewById<TextView>(R.id.tvTodayScore)
-        val statsIcon = findViewById<ImageView>(R.id.ivStatistics)
-        val notificationIcon = findViewById<ImageView>(R.id.ivNotifications)
-        val calendarIcon = findViewById<ImageView>(R.id.ivCalendar)
-
         addButton.setOnClickListener {
             val intent = Intent(this, AddHabitActivity::class.java)
             startActivityForResult(intent, newHabitActivityRequestCode)
@@ -116,30 +124,26 @@ class HabitsScheduleActivity : AppCompatActivity() {
         notificationIcon.setOnClickListener {
             useNotifications = if(useNotifications) {
                 Toast.makeText(this, "Notifications off", Toast.LENGTH_SHORT).show()
-                notificationIcon.setImageResource(R.drawable.baseline_notifications_off_24)
                 false
             } else {
                 Toast.makeText(this, "Notifications on", Toast.LENGTH_SHORT).show()
-                notificationIcon.setImageResource(R.drawable.baseline_notifications_24)
                 true
             }
+            setNotificationsIcon(notificationIcon)
+            saveNotificationMode()
         }
 
-        habitViewModel.getScoreForDay(LocalDate.now().dayOfYear).observe(this) { score ->
+        habitViewModel.getScoreForDay(LocalDate.now().dayOfYear, "All categories").observe(this) { score ->
             score.let { scoreView.text = "Today score: ${score ?: 0}" }
         }
+
         habitViewModel.getHabitsForDay(0).observe(this) { habits ->
             habits.let { adapter.submitList(it) }
         }
 
-        habitViewModel.getRemainingHabits(0, LocalDate.now().dayOfYear).observe(this) { count ->
+        habitViewModel.getRemainingHabits(0, LocalDate.now().dayOfYear, "All categories").observe(this) { count ->
             count.let { countPrompt.text = "You have $it habit left for today" }
         }
-
-//        calendarIcon.setOnClickListener {
-//            val intent = Intent(this, CameraActivity::class.java)
-//            this.startActivity(intent)
-//        }
     }
 
     override fun onStop() {
@@ -181,6 +185,21 @@ class HabitsScheduleActivity : AppCompatActivity() {
                     }
                 }
             }
+        }
+    }
+
+    private fun setNotificationsIcon(icon: ImageView) {
+        if (useNotifications) {
+            icon.setImageResource(R.drawable.baseline_notifications_24)
+        } else {
+            icon.setImageResource(R.drawable.baseline_notifications_off_24)
+        }
+    }
+
+    private fun saveNotificationMode() {
+        sharedPref.edit().apply {
+            putBoolean("notifyMode", useNotifications)
+            apply()
         }
     }
 

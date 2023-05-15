@@ -19,7 +19,6 @@ class NotifyActivity: AppCompatActivity()  {
     }
 
     private fun sendNotificationOnChannel1(context: Context) {
-//        CoroutineScope(Dispatchers.IO).launch {
             val notification = NotificationCompat.Builder(
                 context,
                 "channel1"
@@ -39,6 +38,5 @@ class NotifyActivity: AppCompatActivity()  {
             }
 
             NotificationManagerCompat.from(context).notify(1, notification)
-//        }
-}
+    }
 }
