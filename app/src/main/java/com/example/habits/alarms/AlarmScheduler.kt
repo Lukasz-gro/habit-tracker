@@ -16,7 +16,6 @@ class NotificationAlarmScheduler(
     private val alarmIntent = Intent(context, AlarmReceiver::class.java)
 
     fun schedule(remainingHabits: ArrayList<Int>) {
-        println("Scheduluje nowe powiadomienia")
         val calendar: Calendar = Calendar.getInstance().apply {
             timeInMillis = System.currentTimeMillis()
             set(Calendar.HOUR_OF_DAY, 10)

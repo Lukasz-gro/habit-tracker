@@ -57,11 +57,12 @@ class HabitsScheduleActivity : AppCompatActivity() {
         val statsIcon = findViewById<ImageView>(R.id.ivStatistics)
         val notificationIcon = findViewById<ImageView>(R.id.ivNotifications)
         val galleryIcon = findViewById<ImageView>(R.id.ivGallery)
+        val bluetoothIcon = findViewById<ImageView>(R.id.ivBluetooth)
 
         scheduler = NotificationAlarmScheduler(this)
         sharedPref = getSharedPreferences("useNotifications", Context.MODE_PRIVATE)
         useNotifications = sharedPref.getBoolean("notifyMode", true)
-        println("Wartosc w useNotifications jest taka ")
+
         setNotificationsIcon(notificationIcon)
 
         val recyclerView = findViewById<RecyclerView>(R.id.rvHabits)
@@ -130,7 +131,17 @@ class HabitsScheduleActivity : AppCompatActivity() {
                 true
             }
             setNotificationsIcon(notificationIcon)
-            saveNotificationMode()
+            saveMode("notifyMode", useNotifications)
+        }
+
+        bluetoothIcon.setOnClickListener {
+            val intent = Intent(this, ListenBluetoothActivity::class.java)
+            this.startActivity(intent)
+        }
+
+        galleryIcon.setOnClickListener {
+            val intent = Intent(this, GalleryActivity::class.java)
+            this.startActivity(intent)
         }
 
         habitViewModel.getScoreForDay(LocalDate.now().dayOfYear, "All categories").observe(this) { score ->
@@ -196,9 +207,9 @@ class HabitsScheduleActivity : AppCompatActivity() {
         }
     }
 
-    private fun saveNotificationMode() {
+    private fun saveMode(mode: String, value: Boolean) {
         sharedPref.edit().apply {
-            putBoolean("notifyMode", useNotifications)
+            putBoolean(mode, value)
             apply()
         }
     }
@@ -219,5 +230,4 @@ class HabitsScheduleActivity : AppCompatActivity() {
             })
         }
     }
-
 }

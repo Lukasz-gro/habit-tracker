@@ -94,11 +94,10 @@ interface HabitDao {
             "(SELECT habitId from dayCompletion where day = :dayOfYear and done = true))")
     fun remainingHabitsWithCategory(dayOfWeek: Int, dayOfYear: Int, category: String): Flow<Int>
 
-    @Query("SELECT 41 - COUNT(*) from dayCompletion where day <= :dayOfYear and day >=(:dayOfYear-6) and done = true and :dayOfWeek <= 100")
+    @Query("SELECT COUNT(*) from daySchedule where habit IN (SELECT id from habitList) and :dayOfWeek <= :dayOfYear")
     fun remainingHabitsForWeek(dayOfWeek: Int, dayOfYear: Int): Flow<Int>
 
-    @Query("SELECT 41 - COUNT(*) from dayCompletion LEFT JOIN habitList ON dayCompletion.habitId=habitList.id" +
-            " where dayCompletion.day <= :dayOfYear and dayCompletion.day >=(:dayOfYear-6) and dayCompletion.done = true and habitList.category=:category and :dayOfWeek <= 100")
+    @Query("SELECT COUNT(*) from daySchedule where habit IN (SELECT id from habitList WHERE category = :category and :dayOfWeek <= :dayOfYear)")
     fun remainingHabitsForWeekWithCategory(dayOfWeek: Int, dayOfYear: Int, category: String): Flow<Int>
 
     @Query("SELECT * from habitList where id IN " +
@@ -134,4 +133,6 @@ interface HabitDao {
     @Query("SELECT DISTINCT category FROM habitList")
     fun getCategoryList(): Flow<List<String>>
 
+    @Query("SELECT * FROM photos")
+    fun getAllPictures(): Flow<List<Photo>>
 }

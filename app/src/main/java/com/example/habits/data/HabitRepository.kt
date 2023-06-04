@@ -147,6 +147,10 @@ class HabitRepository(private val habitDao: HabitDao) {
         return habitDao.getCategoryList().asLiveData()
     }
 
+    fun getAllPictures(): LiveData<List<Photo>> {
+        return habitDao.getAllPictures().asLiveData()
+    }
+
     @WorkerThread
     suspend fun updateHabitInfo(habit: Habit) {
         habitDao.update(habit)

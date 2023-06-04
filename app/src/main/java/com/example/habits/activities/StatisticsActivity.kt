@@ -25,6 +25,7 @@ class StatisticsActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
     private lateinit var remainingView: TextView
     private lateinit var totalView: TextView
     private var category = "All categories"
+    private var remaining = 0
     private var offset = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -106,11 +107,12 @@ class StatisticsActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
             setScoreView(score)
         }
 
-        habitViewModel.getRemainingHabitsForWeek(0, currentDate.dayOfYear, category).observeOnce(this) { count ->
+        habitViewModel.getRemainingHabits(0, currentDate.dayOfYear, category).observeOnce(this) { count ->
             setRemainingView(count)
         }
 
         habitViewModel.getHabitsCountForDay(0, category).observeOnce(this) { count ->
+            remaining = count
             setTotalCount(count)
         }
 
@@ -120,12 +122,12 @@ class StatisticsActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
     }
 
     private fun updateStatsForWeekCategory() {
-        habitViewModel.getScoreForWeek(currentDate.dayOfYear, category).observeOnce(this) { score ->
-            setScoreView(score)
+        habitViewModel.countCompletedInDay(currentDate.dayOfYear, category).observeOnce(this) { count ->
+            setCompleteView(count)
         }
 
-        habitViewModel.getRemainingHabitsForWeek(0, currentDate.dayOfYear, category).observeOnce(this) { count ->
-            setRemainingView(count)
+        habitViewModel.getScoreForWeek(currentDate.dayOfYear, category).observeOnce(this) { score ->
+            setScoreView(score)
         }
 
         habitViewModel.getHabitsCountForWeek(category).observeOnce(this) { count ->
@@ -134,6 +136,10 @@ class StatisticsActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
 
         habitViewModel.countCompletedInWeek(currentDate.dayOfYear, category).observeOnce(this) { count ->
             setCompleteView(count)
+        }
+
+        habitViewModel.getRemainingHabitsForWeek(0, currentDate.dayOfYear, category).observeOnce(this) { count ->
+            setRemainingView(count - remaining)
         }
     }
 
@@ -159,6 +165,9 @@ class StatisticsActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
     }
 
     private fun setCompleteView(count: Int) {
+        if (day) {
+            remaining = count
+        }
         completedView.text = "Completed: $count"
     }
 

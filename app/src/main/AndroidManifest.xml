@@ -6,8 +6,19 @@
     <uses-feature android:name="android.hardware.camera.any" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="28" />
+    <uses-permission
+        android:name="android.permission.BLUETOOTH"
+        android:maxSdkVersion="30" />
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_ADMIN"
+        android:maxSdkVersion="30" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.WRITE_MEDIA_IMAGES" />
     <application
         android:name=".HabitApplication"
         android:allowBackup="true"
@@ -30,6 +41,18 @@
 
         <activity android:name=".activities.HabitDetailsActivity"
             android:parentActivityName=".activities.HabitsScheduleActivity"/>
+
+        <activity android:name=".activities.GalleryActivity"
+            android:label="Gallery"
+            android:parentActivityName=".activities.HabitsScheduleActivity"/>
+
+        <activity android:name=".activities.PairedDevicesActivity"
+            android:label="Share photo"
+            android:parentActivityName=".activities.HabitDetailsActivity"/>
+
+        <activity android:name=".activities.ListenBluetoothActivity"
+            android:label="Wait for files"
+            android:parentActivityName=".activities.HabitDetailsActivity"/>
 
         <activity android:name=".activities.AddHabitActivity"
             android:label="Add habit"

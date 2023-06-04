@@ -153,6 +153,10 @@ class HabitViewModel(private val repository: HabitRepository) : ViewModel() {
     fun getCategoryList(): LiveData<List<String>> {
         return repository.getCategoryList()
     }
+
+    fun getAllPictures(): LiveData<List<Photo>> {
+        return repository.getAllPictures()
+    }
 }
 
 class HabitViewModelFactory(private val repository: HabitRepository) : ViewModelProvider.Factory {
