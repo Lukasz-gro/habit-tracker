@@ -26,36 +26,6 @@ class GalleryActivity : AppCompatActivity() {
             val intent = Intent(this, PairedDevicesActivity::class.java)
             intent.putExtra("photoToSend", it)
             this.startActivity(intent)
-//            val photo = File(
-//                this.getExternalFilesDir(Environment.DIRECTORY_DCIM)!!.absolutePath,
-//                LocalDate.now().toString() + Random.nextInt(0, 10000)
-//            )
-//            if (photo.exists()) {
-//                photo.delete()
-//            }
-//            try {
-//                val fos = FileOutputStream(photo.path)
-//                fos.write(it)
-//                fos.close()
-
-//                CoroutineScope(Dispatchers.IO).launch {
-//                    println("Pisanie do pliku skonczone")
-//
-//                    val newPhoto = com.example.habits.data.Photo(
-//                        description = "No description",
-//                        path = photo.path,
-//                        habitId = -1,
-//                        day = 0,
-//                        doy = LocalDate.now().dayOfYear
-//                    )
-//                    habitViewModel.insertPhoto(newPhoto)
-//                }
-
-//            } catch (e: Exception) {
-//                println(e)
-//                println("Error przy pisaniu do pliku")
-//            }
-//            intent.putExtra("photoPath", it)
         }
 
         recyclerView.adapter = adapter
